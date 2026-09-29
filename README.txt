@@ -1,6 +1,4 @@
-# Custom-RigidSim
-
-Télécom Paris - IG03 - Fundamentals of Computer Graphics
+Telecom Paris - IG03 - Fundamentals of Computer Graphics
 Author: Pedro NASCIMENTO COÊLHO
 
 ////////////////////////////////////////////////////
@@ -32,5 +30,4 @@ COMMANDS
     * F: surface rendering
     * L: apply one step of Loop subdivision to the central mesh
     * ESC: quit the program
-
 
