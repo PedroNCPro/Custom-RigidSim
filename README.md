@@ -198,3 +198,6 @@ Typical workflow:
 4. Create **graphical objects** combining a mesh and a material, and turn them into rigid bodies with `addBoxBody`, `addBoxedBody` or `addRoundBody`.
 5. Press `P` to start the simulation and `R` to reset it.
 
+## Other Images
+
+![](images/sliding.png) ![](images/colision.png) ![](images/custom_colision.png)
