@@ -99,6 +99,10 @@ You can freely change the objects displayed and their attributes inside the `con
 | `create_material` | Creates a `Material`. Requires a name; optional arguments: path of an albedo texture and path of a normal texture. |
 | `create_graphical_object` | Creates a Graphical Object. Requires a name, a reference to a `Mesh` and a reference to a `Material`; optional argument to enable physical animation. |
 
+![Create mesh from file](images/monkey.png)
+
+Mesh created from file
+
 ### Light attributes
 
 | Attribute | Type | Default | Description |
@@ -108,6 +112,10 @@ You can freely change the objects displayed and their attributes inside the `con
 | `intensity` | `float` | `1.0f` | Intensity of the light color. |
 | `perspec_angle` | `float` | `0.0f` | FOV angle of the perspective projection used for shadows. If zero, orthographic projection is used. |
 
+![](images/lights.png)
+
+Lights created with different parameters
+
 ### Mesh methods
 
 | Method | Description |
@@ -116,6 +124,10 @@ You can freely change the objects displayed and their attributes inside the `con
 | `addBox` | Gives a block shape. Requires width, length and depth; optional: block center in model space. |
 | `addSphere` | Gives a spherical shape. Requires a radius; optional: resolution (vertices per meridian). |
 | `meshFromMatrix` | Gives a custom shape from a 2D binary matrix (each `1` is a voxel). Requires the matrix; optional: voxel dimensions. |
+
+![](images/cube.png) ![](images/sphere.png)
+
+Box and sphere meshes added
 
 ### Material attributes
 
@@ -149,13 +161,34 @@ You can freely change the objects displayed and their attributes inside the `con
 
 The snippet below is an illustrative sketch of how a scene can be described inside `configScene()`. Check the exact signatures in the source code.
 
-A table-shaped custom mesh is generated from this binary matrix (the first row becomes a single block thanks to the rectangle-finding algorithm):
+A table-shaped custom mesh is generated from a binary matrix (the first row becomes a single block thanks to the rectangle-finding algorithm):
 
 ```
-1 1 1 1 1
-1 0 0 0 1
-1 0 0 0 1
+
+  auto light1 = create_light();
+  light1->position = glm::vec3(0, 0.5, 1);
+  
+  auto customMesh = create_mesh("custom");
+  std::vector<std::vector<int> > shape1 = {
+    {1,1,1,1,1},
+    {1,0,0,0,1},
+    {1,0,0,0,1},
+  };
+  float voxel_w = .2f, voxel_h = .1f, voxel_d = .6f;
+  customMesh->meshFromMatrix(shape1, voxel_w, voxel_h, voxel_d);
+
+  auto standardSurface = create_material("standardSurface");
+  standardSurface->albedo = glm::vec3(1, 0.71, 0.29);
+
+  auto customObj = create_graphical_object("custom", customMesh, standardSurface);
+  customObj->modelMat = glm::translate(glm::mat4(1.0), glm::vec3(0, -0.5, 0));
+  customObj->addBoxedBody(customMesh, shape1.size()*voxel_w, shape1[0].size()*voxel_h, voxel_d);
+  customObj->setBodyCenter(Vec3f(0, -0.7, 0));
+
 ```
+
+![](images/custom.png)
+
 
 Typical workflow:
 
